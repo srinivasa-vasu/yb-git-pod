@@ -1,0 +1,42 @@
+image:
+  file: .gitpod/Dockerfile
+
+tasks:
+  - name: db-run
+    init: /usr/local/yugabyte/bin/post_install.sh
+    command: |
+      yugabyted start --base_dir=$STORE/ybd/ybd1 --listen=$HOST_LB
+      gp sync-done base
+  - name: db-run
+    command: |
+      gp sync-await base
+      yugabyted start --base_dir=$STORE/ybd/ybd1 --listen=$HOST_LB2 --join=$HOST_LB
+  - name: db-run
+    command: |
+      gp sync-await base
+      yugabyted start --base_dir=$STORE/ybd/ybd1 --listen=$HOST_LB3 --join=$HOST_LB
+
+# exposed ports
+ports:
+  - port: 7000
+    onOpen: notify
+  - port: 9000
+    onOpen: notify
+  - port: 37843
+    onOpen: ignore
+  - port: 7100
+    onOpen: ignore
+  - port: 9100
+    onOpen: ignore
+  - port: 5433
+    onOpen: notify
+  - port: 13000
+    onOpen: ignore
+  - port: 9042
+    onOpen: notify
+  - port: 12000
+    onOpen: ignore
+
+vscode:
+  extensions:
+    - GitHub.vscode-pull-request-github
