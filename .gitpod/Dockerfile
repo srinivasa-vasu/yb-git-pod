@@ -1,4 +1,4 @@
-FROM gitpod/workspace-thin
+FROM gitpod/workspace-base
 
 ARG YB_VERSION=2.8.0.0
 ARG ROLE=gitpod
