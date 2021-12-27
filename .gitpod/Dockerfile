@@ -1,12 +1,9 @@
-FROM gitpod/workspace-full
+FROM gitpod/workspace-thin
 
 ARG YB_VERSION=2.8.0.0
 ARG ROLE=gitpod
 
 USER root
-
-RUN apt-get update && \
-  apt-get -y install netcat --no-install-recommends
 
 RUN curl -sSLo ./yugabyte.tar.gz https://downloads.yugabyte.com/yugabyte-${YB_VERSION}-linux.tar.gz \
   && mkdir yugabyte \
