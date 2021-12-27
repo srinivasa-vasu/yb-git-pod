@@ -2,19 +2,19 @@ image:
   file: .gitpod/Dockerfile
 
 tasks:
-  - name: db-run
+  - name: db-run-base
     init: /usr/local/yugabyte/bin/post_install.sh
     command: |
       yugabyted start --base_dir=$STORE/ybd/ybd1 --listen=$HOST_LB
       gp sync-done base
-  - name: db-run
+  - name: db-run-lb2
     command: |
       gp sync-await base
-      yugabyted start --base_dir=$STORE/ybd/ybd1 --listen=$HOST_LB2 --join=$HOST_LB
-  - name: db-run
+      yugabyted start --base_dir=$STORE/ybd/ybd2 --listen=$HOST_LB2 --join=$HOST_LB
+  - name: db-run-lb3
     command: |
       gp sync-await base
-      yugabyted start --base_dir=$STORE/ybd/ybd1 --listen=$HOST_LB3 --join=$HOST_LB
+      yugabyted start --base_dir=$STORE/ybd/ybd3 --listen=$HOST_LB3 --join=$HOST_LB
 
 # exposed ports
 ports:
