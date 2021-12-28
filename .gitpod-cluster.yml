@@ -3,7 +3,6 @@ image:
 
 tasks:
   - name: run-base
-    init: /usr/local/yugabyte/bin/post_install.sh
     command: |
       yugabyted start --base_dir=$STORE/ybd1 --listen=$HOST_LB
       gp sync-done base

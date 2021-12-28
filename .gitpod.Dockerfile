@@ -14,9 +14,10 @@ RUN curl -sSLo ./yugabyte.tar.gz https://downloads.yugabyte.com/yugabyte-${YB_VE
 
 RUN mkdir -p /var/ybdp \
   && chown -R $ROLE:$ROLE /var/ybdp \
-  && find /usr/local/yugabyte/* | xargs chown $ROLE:$ROLE
+  && chown -R $ROLE:$ROLE /usr/local/yugabyte
 
 USER $ROLE
+RUN ["/usr/local/yugabyte/bin/post_install.sh"]
 
 ENV HOST_LB=127.0.0.1
 ENV HOST_LB2=127.0.0.2
