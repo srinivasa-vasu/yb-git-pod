@@ -3,19 +3,18 @@ FROM gitpod/workspace-full
 ARG YB_VERSION=2.8.0.0
 ARG ROLE=gitpod
 
-USER root
-
+USER $ROLE
+WORKDIR /tmp
 RUN curl -sSLo ./yugabyte.tar.gz https://downloads.yugabyte.com/yugabyte-${YB_VERSION}-linux.tar.gz \
   && mkdir yugabyte \
   && tar -xvf yugabyte.tar.gz -C yugabyte --strip-components=1 \
-  && mv ./yugabyte /usr/local/ \
-  && chmod +x /usr/local/yugabyte/bin/* \
+  && chmod +x /tmp/yugabyte/bin/* \
   && rm ./yugabyte.tar.gz
 
-RUN mkdir -p /var/ybdp \
-  && chown -R $ROLE:$ROLE /var/ybdp \
-  && chown -R $ROLE:$ROLE /usr/local/yugabyte
-
+USER root  
+RUN  rsync -rtplog --remove-source-files /tmp/yugabyte /usr/local/ \
+  && mkdir -p /var/ybdp
+  
 USER $ROLE
 RUN ["/usr/local/yugabyte/bin/post_install.sh"]
 
