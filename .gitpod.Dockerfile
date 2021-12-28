@@ -14,7 +14,7 @@ RUN curl -sSLo ./yugabyte.tar.gz https://downloads.yugabyte.com/yugabyte-${YB_VE
 
 RUN mkdir -p /var/ybdp \
   && chown -R $ROLE:$ROLE /var/ybdp \
-  && chown -R $ROLE:$ROLE /usr/local/yugabyte
+  && find /usr/local/yugabyte/* | xargs chown $ROLE:$ROLE
 
 USER $ROLE
 
