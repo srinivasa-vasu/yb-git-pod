@@ -2,10 +2,20 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - name: run
+  - name: run-base
     init: /usr/local/yugabyte/bin/post_install.sh
     command: |
-      yugabyted start --base_dir=$STORE --listen=$HOST_LB
+      yugabyted start --base_dir=$STORE/ybd1 --listen=$HOST_LB
+      gp sync-done base
+  - name: run-lb2
+    command: |
+      gp sync-await base
+      yugabyted start --base_dir=$STORE/ybd2 --listen=$HOST_LB2 --join=$HOST_LB
+  - name: run-lb3
+    command: |
+      gp sync-await base
+      yugabyted start --base_dir=$STORE/ybd3 --listen=$HOST_LB3 --join=$HOST_LB
+
 # exposed ports
 ports:
   - port: 7000
