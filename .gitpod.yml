@@ -3,7 +3,7 @@ image:
 
 tasks:
   - name: run
-    command: |
+    before: |
       yugabyted start --base_dir=$STORE --listen=$HOST_LB
 # exposed ports
 ports:
