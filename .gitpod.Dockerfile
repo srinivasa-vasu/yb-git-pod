@@ -12,7 +12,7 @@ RUN curl -sSLo ./yugabyte.tar.gz https://downloads.yugabyte.com/yugabyte-${YB_VE
   && rm ./yugabyte.tar.gz
 
 USER root  
-RUN  rsync -rtplog --remove-source-files /tmp/yugabyte /usr/local/ \
+RUN  mv /tmp/yugabyte /usr/local/ \
   && mkdir -p /var/ybdp
   
 USER $ROLE
