@@ -3,21 +3,18 @@ FROM gitpod/workspace-full
 ARG YB_VERSION=2.8.0.0
 ARG ROLE=gitpod
 
-WORKDIR /home/gitpod
+USER root
+RUN mkdir -p /usr/local/yugabyte \
+  && mkdir -p /var/ybdp
+
+RUN chown -R $ROLE:$ROLE /var/ybdp \
+  && chown -R $ROLE:$ROLE /usr/local/yugabyte
 
 USER $ROLE
 RUN curl -sSLo ./yugabyte.tar.gz https://downloads.yugabyte.com/yugabyte-${YB_VERSION}-linux.tar.gz \
-  && mkdir yugabyte \
-  && tar -xvf yugabyte.tar.gz -C yugabyte --strip-components=1 \
-  && chmod +x ./yugabyte/bin/* \
+  && tar -xvf yugabyte.tar.gz -C /usr/local/yugabyte --strip-components=1 \
+  && chmod +x /usr/local/yugabyte/bin/* \
   && rm ./yugabyte.tar.gz
-
-USER root  
-RUN  mv ./yugabyte /usr/local/ \
-  && mkdir -p /var/ybdp \
-  && chown -R $ROLE:$ROLE /var/ybdp
-  
-USER $ROLE
 RUN ["/usr/local/yugabyte/bin/post_install.sh"]
 RUN echo "\n# yugabytedb executable path" >> ~/.bashrc
 RUN echo "export PATH=\$PATH:/usr/local/yugabyte/bin/" >> ~/.bashrc
