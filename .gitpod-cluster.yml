@@ -15,6 +15,10 @@ tasks:
     before: |
       gp sync-await lb2
       yugabyted start --base_dir=$STORE/ybd3 --listen=$HOST_LB3 --join=$HOST_LB
+  - name: shell
+    command: |
+      gp await-port 5433
+      ysqlsh
 
 # exposed ports
 ports:

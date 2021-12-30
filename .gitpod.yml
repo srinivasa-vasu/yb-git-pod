@@ -6,7 +6,7 @@ tasks:
     before: |
       yugabyted start --base_dir=$STORE --listen=$HOST_LB
     command: |
-      sleep 3
+      gp await-port 5433
       ysqlsh
 # exposed ports
 ports:
