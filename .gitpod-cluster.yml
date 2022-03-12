@@ -8,11 +8,11 @@ tasks:
   - name: run-ep2
     before: |
       gp sync-await base
-      yugabyted start --base_dir=/var/ybdp2 --listen=127.0.0.2 --join=$HOST
+      yugabyted start --base_dir=$STORE/ybd2 --listen=127.0.0.2 --join=$HOST
   - name: run-ep3
     before: |
       gp sync-await base
-      yugabyted start --base_dir=/var/ybd3 --listen=127.0.0.3 --join=$HOST
+      yugabyted start --base_dir=$STORE/ybd3 --listen=127.0.0.3 --join=$HOST
   - name: shell
     command: |
       gp await-port 5433

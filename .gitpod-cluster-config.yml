@@ -1,25 +1,24 @@
 image: gitpod/workspace-yugabytedb:2022-03-10-03-45-16
 
 tasks:
-  - name: run-base
+  - name: check-base
     before: |
-      yugabyted stop
-      yugabyted start --base_dir=$STORE --listen=$HOST --tserver_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1a" --master_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1a"
+      gp await-port 5433
       gp sync-done base
   - name: run-ep2
     before: |
       gp sync-await base
-      yugabyted start --base_dir=/var/ybdp2 --listen=127.0.0.2 --join=$HOST --tserver_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1b" --master_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1b"
+      yugabyted start --base_dir=$STORE/ybd2 --listen=127.0.0.2 --join=$HOST --tserver_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack2" --master_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack2"
       gp sync-done ep2
   - name: run-ep3
     before: |
-      gp sync-await ep2
-      yugabyted start --base_dir=/var/ybdp3 --listen=127.0.0.3 --join=$HOST --tserver_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1c" --master_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1c"
+      gp sync-await base
+      yugabyted start --base_dir=$STORE/ybd3 --listen=127.0.0.3 --join=$HOST --tserver_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack3" --master_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack3"
       gp sync-done ep3
   - name: cluster-config
     before: |
       gp sync-await ep3
-      yb-admin -master_addresses $HOST:7100,127.0.0.2:7100,127.0.0.3:7100 modify_placement_info ybcloud.ap-south-1.ap-south-1a,ybcloud.ap-south-1.ap-south-1b,ybcloud.ap-south-1.ap-south-1c 3
+      yb-admin -master_addresses $HOST:7100,127.0.0.2:7100,127.0.0.3:7100 modify_placement_info cloud1.datacenter1.rack1,cloud1.datacenter1.rack2,cloud1.datacenter1.rack3 3
   - name: shell
     command: |
       gp await-port 5433
