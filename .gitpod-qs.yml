@@ -1,5 +1,4 @@
-image:
-  file: .gitpod.Dockerfile
+image: gitpod/workspace-yugabytedb:2022-03-10-03-45-16
 
 tasks:
   - name: run
