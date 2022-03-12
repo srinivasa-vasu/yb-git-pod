@@ -1,19 +1,18 @@
 image: gitpod/workspace-yugabytedb:2022-03-10-03-45-16
 
 tasks:
-  - name: run-base
+  - name: check-base
     before: |
-      yugabyted start --base_dir=$STORE/ybd1 --listen=$HOST_LB
+      gp await-port 5433
       gp sync-done base
-  - name: run-lb2
+  - name: run-ep2
     before: |
       gp sync-await base
-      yugabyted start --base_dir=$STORE/ybd2 --listen=$HOST_LB2 --join=$HOST_LB
-      gp sync-done lb2
-  - name: run-lb3
+      yugabyted start --base_dir=/var/ybdp2 --listen=127.0.0.2 --join=$HOST
+  - name: run-ep3
     before: |
-      gp sync-await lb2
-      yugabyted start --base_dir=$STORE/ybd3 --listen=$HOST_LB3 --join=$HOST_LB
+      gp sync-await base
+      yugabyted start --base_dir=/var/ybd3 --listen=127.0.0.3 --join=$HOST
   - name: shell
     command: |
       gp await-port 5433

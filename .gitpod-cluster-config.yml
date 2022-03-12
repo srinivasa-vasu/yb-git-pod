@@ -3,22 +3,23 @@ image: gitpod/workspace-yugabytedb:2022-03-10-03-45-16
 tasks:
   - name: run-base
     before: |
-      yugabyted start --base_dir=$STORE/ybd1 --listen=$HOST_LB --tserver_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1a" --master_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1a"
+      yugabyted stop
+      yugabyted start --base_dir=$STORE --listen=$HOST --tserver_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1a" --master_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1a"
       gp sync-done base
-  - name: run-lb2
+  - name: run-ep2
     before: |
       gp sync-await base
-      yugabyted start --base_dir=$STORE/ybd2 --listen=$HOST_LB2 --join=$HOST_LB --tserver_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1b" --master_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1b"
-      gp sync-done lb2
-  - name: run-lb3
+      yugabyted start --base_dir=/var/ybdp2 --listen=127.0.0.2 --join=$HOST --tserver_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1b" --master_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1b"
+      gp sync-done ep2
+  - name: run-ep3
     before: |
-      gp sync-await lb2
-      yugabyted start --base_dir=$STORE/ybd3 --listen=$HOST_LB3 --join=$HOST_LB --tserver_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1c" --master_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1c"
-      gp sync-done lb3
+      gp sync-await ep2
+      yugabyted start --base_dir=/var/ybdp3 --listen=127.0.0.3 --join=$HOST --tserver_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1c" --master_flags="placement_cloud=ybcloud,placement_region=ap-south-1,placement_zone=ap-south-1c"
+      gp sync-done ep3
   - name: cluster-config
     before: |
-      gp sync-await lb3
-      yb-admin -master_addresses $HOST_LB:7100,$HOST_LB2:7100,$HOST_LB3:7100 modify_placement_info ybcloud.ap-south-1.ap-south-1a,ybcloud.ap-south-1.ap-south-1b,ybcloud.ap-south-1.ap-south-1c 3
+      gp sync-await ep3
+      yb-admin -master_addresses $HOST:7100,127.0.0.2:7100,127.0.0.3:7100 modify_placement_info ybcloud.ap-south-1.ap-south-1a,ybcloud.ap-south-1.ap-south-1b,ybcloud.ap-south-1.ap-south-1c 3
   - name: shell
     command: |
       gp await-port 5433

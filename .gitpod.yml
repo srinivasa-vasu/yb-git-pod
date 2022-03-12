@@ -1,9 +1,7 @@
 image: gitpod/workspace-yugabytedb:2022-03-10-03-45-16
 
 tasks:
-  - name: run
-    before: |
-      yugabyted start --base_dir=$STORE --listen=$HOST_LB
+  - name: shell
     command: |
       gp await-port 5433
       ysqlsh
