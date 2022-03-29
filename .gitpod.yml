@@ -1,36 +1,3 @@
-image: humourmind/tool-yugabytedb:patch
+image: humourmind/tool-yugabytedb:interim
 #image: gitpod/workspace-yugabytedb:2022-03-10-03-45-16
 
-tasks:
-#   - name: shell
-#     command: |
-#       gp await-port 5433
-#       ysqlsh
-  - name: preload
-    env:
-      DB_PRELOAD: "false"
-    before: echo $DB_PRELOAD      
-# exposed ports
-ports:
-  - port: 7000
-    onOpen: notify
-  - port: 9000
-    onOpen: notify
-  - port: 37843
-    onOpen: ignore
-  - port: 7100
-    onOpen: ignore
-  - port: 9100
-    onOpen: ignore
-  - port: 5433
-    onOpen: notify
-  - port: 13000
-    onOpen: ignore
-  - port: 9042
-    onOpen: notify
-  - port: 12000
-    onOpen: ignore
-
-vscode:
-  extensions:
-    - GitHub.vscode-pull-request-github
