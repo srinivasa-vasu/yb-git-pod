@@ -4,19 +4,14 @@ tasks:
 - name: disable-preload
   env:
     DB_PRELOAD="false"
-  before: |
-    echo "do nothing"
+  command: echo $DB_PRELOAD
 
-- name: shell
-  command: |
-    gp await-port 5433
-    ysqlsh
 # exposed ports
 ports:
   - port: 7000
-    onOpen: notify
+    onOpen: ignore
   - port: 9000
-    onOpen: notify
+    onOpen: ignore
   - port: 37843
     onOpen: ignore
   - port: 7100
@@ -24,14 +19,10 @@ ports:
   - port: 9100
     onOpen: ignore
   - port: 5433
-    onOpen: notify
+    onOpen: ignore
   - port: 13000
     onOpen: ignore
   - port: 9042
-    onOpen: notify
+    onOpen: ignore
   - port: 12000
     onOpen: ignore
-
-vscode:
-  extensions:
-    - GitHub.vscode-pull-request-github
