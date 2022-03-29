@@ -1,11 +1,11 @@
-image: humourmind/tool-yugabytedb:test
+image: humourmind/tool-yugabytedb:patch
 #image: gitpod/workspace-yugabytedb:2022-03-10-03-45-16
 
 tasks:
-  - name: shell
-    command: |
-      gp await-port 5433
-      ysqlsh
+#   - name: shell
+#     command: |
+#       gp await-port 5433
+#       ysqlsh
   - name: preload
     env:
       DB_PRELOAD: "false"
