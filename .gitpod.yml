@@ -1,4 +1,5 @@
-image: humourmind/tool-yugabytedb:test
+#image: humourmind/tool-yugabytedb:test
+image: gitpod/workspace-full
 
 tasks:
 - name: disable-preload
