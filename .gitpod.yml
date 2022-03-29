@@ -9,7 +9,7 @@ tasks:
   - name: preload
     env:
       DB_PRELOAD: "false"
-    command: echo $DB_PRELOAD      
+    before: echo $DB_PRELOAD      
 # exposed ports
 ports:
   - port: 7000
