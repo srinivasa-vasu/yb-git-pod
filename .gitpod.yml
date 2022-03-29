@@ -2,5 +2,6 @@ image: humourmind/tool-yugabytedb:test
 
 tasks:
   - name: disable-preload
-    env: |
-      DB_PRELOAD=false
+    env: DB_PRELOAD=false
+    before: |
+    #do nothing
