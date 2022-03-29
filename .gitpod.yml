@@ -1,18 +1,17 @@
-#image: humourmind/tool-yugabytedb:test
-image: gitpod/workspace-full
+image: humourmind/tool-yugabytedb:test
+#image: gitpod/workspace-yugabytedb:2022-03-10-03-45-16
 
 tasks:
-- name: disable-preload
-  env:
-    DB_PRELOAD="false"
-  command: echo $DB_PRELOAD
-
+  - name: shell
+    command: |
+      gp await-port 5433
+      ysqlsh
 # exposed ports
 ports:
   - port: 7000
-    onOpen: ignore
+    onOpen: notify
   - port: 9000
-    onOpen: ignore
+    onOpen: notify
   - port: 37843
     onOpen: ignore
   - port: 7100
@@ -20,10 +19,14 @@ ports:
   - port: 9100
     onOpen: ignore
   - port: 5433
-    onOpen: ignore
+    onOpen: notify
   - port: 13000
     onOpen: ignore
   - port: 9042
-    onOpen: ignore
+    onOpen: notify
   - port: 12000
     onOpen: ignore
+
+vscode:
+  extensions:
+    - GitHub.vscode-pull-request-github
