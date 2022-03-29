@@ -6,6 +6,10 @@ tasks:
     command: |
       gp await-port 5433
       ysqlsh
+  - name: preload
+    env:
+      DB_PRELOAD: "false"
+    command: echo $DB_PRELOAD      
 # exposed ports
 ports:
   - port: 7000
