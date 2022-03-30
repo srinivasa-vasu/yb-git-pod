@@ -4,4 +4,4 @@ image: humourmind/tool-yugabytedb:patch_v0.2
 tasks:
 - name: no-preload
   env:
-    NO_PRELOAD=true
+    NO_PRELOAD: true
