@@ -3,5 +3,5 @@ image: humourmind/tool-yugabytedb:patch_v0.2
 
 tasks:
 - name: no-preload
-  env:
-    NO_PRELOAD: true
+  before: eval $(gp env -e NO_PRELOAD=true)
+  command: echo $NO_PRELOAD
