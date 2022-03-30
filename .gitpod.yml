@@ -1,6 +1,7 @@
 image: humourmind/tool-yugabytedb:patch_v0.2
 #image: gitpod/workspace-yugabytedb:2022-03-10-03-45-16
 
-name: no-preload
-env:
-  NO_PRELOAD=true
+tasks:
+- name: no-preload
+  env:
+    NO_PRELOAD=true
