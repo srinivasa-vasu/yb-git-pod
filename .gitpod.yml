@@ -1,7 +1,3 @@
 image: humourmind/tool-yugabytedb:patch_v0.2
 #image: gitpod/workspace-yugabytedb:2022-03-10-03-45-16
 
-tasks:
-- name: no-preload
-  before: eval $(gp env -e NO_PRELOAD=true)
-  command: echo $NO_PRELOAD
