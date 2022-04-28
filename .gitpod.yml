@@ -1,2 +1,11 @@
 image: gitpod/workspace-yugabytedb
 
+tasks:
+  - name: run-ep
+    before: |
+      yugabyted start --base_dir=$STORE/ybd1 --listen=127.0.0.1
+  - name: shell
+    command: |
+      gp await-port 5433
+      ysqlsh      
+
