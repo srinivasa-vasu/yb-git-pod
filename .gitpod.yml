@@ -3,9 +3,8 @@ image:
 
 tasks:
   - name: run
-    before: |
-      yugabyted start --base_dir=$STORE --listen=$HOST_LB
     command: |
+      yugabyted start --base_dir=$STORE --listen=$HOST_LB
       gp await-port 5433
       ysqlsh
 # exposed ports
