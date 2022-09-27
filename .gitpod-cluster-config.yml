@@ -1,4 +1,4 @@
-image: gitpod/workspace-yugabytedb:2022-03-10-03-45-16
+image: gitpod/workspace-yugabytedb-preview
 
 tasks:
   - name: check-base
@@ -23,7 +23,7 @@ tasks:
     command: |
       gp await-port 5433
       ysqlsh
-            
+
 # exposed ports
 ports:
   - port: 7000
