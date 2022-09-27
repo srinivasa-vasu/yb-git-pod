@@ -12,7 +12,7 @@ tasks:
       gp sync-done ep2
   - name: run-ep3
     before: |
-      gp sync-await base && gp ports await 7100
+      gp sync-await ep2
       yugabyted start --base_dir=$STORE/ybd3 --listen=127.0.0.3 --join=$HOST --tserver_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack3" --master_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack3"
       gp sync-done ep3
   - name: cluster-config

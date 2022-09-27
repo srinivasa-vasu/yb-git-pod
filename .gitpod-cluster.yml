@@ -9,9 +9,10 @@ tasks:
     before: |
       gp sync-await base
       yugabyted start --base_dir=$STORE/ybd2 --listen=127.0.0.2 --join=$HOST
+      gp sync-done ep2
   - name: run-ep3
     before: |
-      gp sync-await base
+      gp sync-await ep2
       yugabyted start --base_dir=$STORE/ybd3 --listen=127.0.0.3 --join=$HOST
   - name: shell
     command: |
