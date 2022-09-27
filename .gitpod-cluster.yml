@@ -3,7 +3,7 @@ image: gitpod/workspace-yugabytedb-preview
 tasks:
   - name: check-base
     before: |
-      gp await-port 5433
+      yugabyted start --base_dir=$STORE/ybd1 --listen=$HOST
       gp sync-done base
   - name: run-ep2
     before: |

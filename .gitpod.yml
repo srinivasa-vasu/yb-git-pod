@@ -4,7 +4,7 @@ image: gitpod/workspace-yugabytedb-preview
 tasks:
   - name: check-base
     before: |
-      gp await-port 5433
+      yugabyted start --base_dir=$STORE/ybd1 --listen=$HOST --tserver_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack1" --master_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack1"
       gp sync-done base
   - name: run-ep2
     before: |
@@ -22,7 +22,7 @@ tasks:
       yb-admin -master_addresses $HOST:7100,127.0.0.2:7100,127.0.0.3:7100 modify_placement_info cloud1.datacenter1.rack1,cloud1.datacenter1.rack2,cloud1.datacenter1.rack3 3
   - name: shell
     command: |
-      gp await-port 5433
+      gp ports await 5433
       ysqlsh
 
 # exposed ports

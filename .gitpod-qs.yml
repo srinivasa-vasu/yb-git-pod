@@ -2,8 +2,10 @@ image: gitpod/workspace-yugabytedb-preview
 
 tasks:
   - name: shell
+    before: |
+      yugabyted start --base_dir=$STORE/ybd1 --listen=$HOST
     command: |
-      gp await-port 5433
+      gp ports await 5433
       ysqlsh
 # exposed ports
 ports:
