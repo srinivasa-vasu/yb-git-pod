@@ -3,22 +3,22 @@ image: gitpod/workspace-yugabytedb-preview
 tasks:
   - name: check-base
     before: |
-      yugabyted start --base_dir=$STORE/ybd1 --listen=$HOST --tserver_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack1" --master_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack1"
+      yugabyted start --base_dir=$STORE/ybd1 --advertise_address=$HOST --cloud_location=cloud1.datacenter1.rack1 --fault_tolerance=node
       gp sync-done base
   - name: run-ep2
     before: |
       gp sync-await base && gp ports await 7100
-      yugabyted start --base_dir=$STORE/ybd2 --listen=127.0.0.2 --join=$HOST --tserver_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack2" --master_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack2"
+      yugabyted start --base_dir=$STORE/ybd2 --advertise_address=127.0.0.2 --join=$HOST --cloud_location=cloud1.datacenter1.rack2 --fault_tolerance=node
       gp sync-done ep2
   - name: run-ep3
     before: |
       gp sync-await ep2
-      yugabyted start --base_dir=$STORE/ybd3 --listen=127.0.0.3 --join=$HOST --tserver_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack3" --master_flags="placement_cloud=cloud1,placement_region=datacenter1,placement_zone=rack3"
+      yugabyted start --base_dir=$STORE/ybd3 --advertise_address=127.0.0.3 --join=$HOST --cloud_location=cloud1.datacenter1.rack3 --fault_tolerance=node
       gp sync-done ep3
   - name: cluster-config
     before: |
       gp sync-await ep3
-      yb-admin -master_addresses $HOST:7100,127.0.0.2:7100,127.0.0.3:7100 modify_placement_info cloud1.datacenter1.rack1,cloud1.datacenter1.rack2,cloud1.datacenter1.rack3 3
+      yugabyted configure --base_dir=$STORE/ybd1 --fault_tolerance=node
   - name: shell
     command: |
       gp ports await 5433

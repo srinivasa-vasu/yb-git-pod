@@ -3,7 +3,7 @@ image: gitpod/workspace-yugabytedb-preview
 tasks:
   - name: shell
     before: |
-      yugabyted start --base_dir=$STORE/ybd1 --listen=$HOST
+      yugabyted start --base_dir=$STORE/ybd1 --advertise_address=$HOST
     command: |
       gp ports await 5433
       ysqlsh
