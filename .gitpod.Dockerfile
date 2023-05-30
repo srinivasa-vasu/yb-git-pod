@@ -1,5 +1,6 @@
 FROM gitpod/workspace-full
 
+ARG YB_RELEASE=2.18.0.0-b65
 ARG YB_VERSION=2.18.0.0
 ARG YB_PATH=/usr/local/yugabyte
 ARG ROLE=gitpod
@@ -11,7 +12,7 @@ RUN chown -R $ROLE:$ROLE /var/ybdp \
   && chown -R $ROLE:$ROLE /usr/local/yugabyte
 
 USER $ROLE
-RUN curl -sSLo ./yugabyte.tar.gz https://downloads.yugabyte.com/releases/2.18.0.0/yugabyte-2.18.0.0-b65-darwin-x86_64.tar.gz \
+RUN curl -sSLo ./yugabyte.tar.gz https://downloads.yugabyte.com/releases/${YB_VERSION}/yugabyte-${YB_RELEASE}-linux-x86_64.tar.gz \
   && tar -xvf yugabyte.tar.gz -C $YB_PATH --strip-components=1 \
   && chmod +x $YB_PATH/bin/* \
   && rm ./yugabyte.tar.gz
