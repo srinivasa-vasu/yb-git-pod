@@ -4,20 +4,20 @@ image:
 tasks:
   - name: run-base
     before: |
-      yugabyted start --base_dir=$STORE/ybd1 --listen=$HOST_LB
+      yugabyted start --base_dir=$STORE/ybd1 --advertise_address=$HOST_LB
       gp sync-done base
   - name: run-lb2
     before: |
       gp sync-await base
-      yugabyted start --base_dir=$STORE/ybd2 --listen=$HOST_LB2 --join=$HOST_LB
+      yugabyted start --base_dir=$STORE/ybd2 --advertise_address=$HOST_LB2 --join=$HOST_LB
       gp sync-done lb2
   - name: run-lb3
     before: |
       gp sync-await lb2
-      yugabyted start --base_dir=$STORE/ybd3 --listen=$HOST_LB3 --join=$HOST_LB
+      yugabyted start --base_dir=$STORE/ybd3 --advertise_address=$HOST_LB3 --join=$HOST_LB
   - name: shell
     command: |
-      gp await-port 5433
+      gp ports await 5433
       ysqlsh
 
 # exposed ports

@@ -4,7 +4,7 @@ image:
 tasks:
   - name: run
     before: |
-      yugabyted start --base_dir=$STORE --listen=$HOST_LB
+      yugabyted start --base_dir=$STORE --advertise_address=$HOST_LB
     command: |
       gp await-port 5433
       ysqlsh
