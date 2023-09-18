@@ -36,7 +36,7 @@ ENV YSQL_API_PORT=13000
 
 # re-initialization is automatically handled
 RUN echo "\n# yugabytedb start command" >> /home/gitpod/.bashrc.d/100-yugabyedb-launch
-RUN echo "[[ -f \${GITPOD_REPO_ROOT}/.nopreload ]] || yugabyted start --base_dir=$STORE --listen=$HOST > /dev/null" >> /home/gitpod/.bashrc.d/100-yugabyedb-launch
+RUN echo "[[ -f \${GITPOD_REPO_ROOT}/.nopreload ]] || yugabyted start --base_dir=$STORE --advertise_address=$HOST > /dev/null" >> /home/gitpod/.bashrc.d/100-yugabyedb-launch
 
 RUN chmod +x /home/gitpod/.bashrc.d/100-yugabyedb-launch
 
